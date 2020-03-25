@@ -1,4 +1,4 @@
-import LinkSDK from '@moneytree/mt-link-javascript-sdk';
+import MTLinkSDK from '@moneytree/mt-link-javascript-sdk';
 import qs from 'qs';
 
 interface ITokenInfo {
@@ -9,7 +9,7 @@ interface ITokenInfo {
   scopes: string[];
 }
 
-const AWESOME_APP_ID = 'af84f08f40970caf17f2e53b31771ceb50d0f32f7d44b826753982e809395290';
+const AWESOME_APP_ID = '05e8b50465a24df8bcfe75f2d4c58d89e89190e3e530d1a02c4db8dd7a770956';
 
 const authorizeBtn = document.getElementById('authorize-btn') as HTMLButtonElement;
 const logoutBtn = document.getElementById('logout-btn') as HTMLButtonElement;
@@ -24,36 +24,32 @@ if (!authorizeBtn || !logoutBtn || !goToSettingsBtn || !goToVaultBtn) {
 
 // Launch authorize route when clicked
 authorizeBtn.onclick = () => {
-  LinkSDK.authorize();
+  MTLinkSDK.authorize();
 };
 
 // Launch logout route when clicked
 logoutBtn.onclick = () => {
   const value = document.getElementById('logout-url').value;
 
-  LinkSDK.logout({
+  MTLinkSDK.logout({
     backTo: value ? value : undefined
   });
 };
 
 // Launch settings route when clicked
 goToSettingsBtn.onclick = () => {
-  LinkSDK.openSettings({ newTab: false });
+  MTLinkSDK.openSettings({ newTab: false });
 };
 
 // Launch vault route when clicked
 goToVaultBtn.onclick = () => {
-  LinkSDK.openVault({ newTab: false });
+  MTLinkSDK.openVault({ newTab: false });
 };
 
-const initializeLinkSDK = () => {
-  LinkSDK.init({
-    clientId: AWESOME_APP_ID,
-    responseType: 'token',
-    scope: ['accounts_read', 'points_read'],
-    redirectUri: 'https://localhost:9000',
-    locale: 'ja-JP',
-    isTestEnvironment: true
+const initializeMTLinkSDK = () => {
+  MTLinkSDK.init(AWESOME_APP_ID, {
+    mode: 'local',
+    redirectUri: 'http://localhost:9000'
   });
 };
 
@@ -91,6 +87,6 @@ const validateToken = async () => {
   `;
 };
 
-initializeLinkSDK();
+initializeMTLinkSDK();
 // tslint:disable-next-line: no-floating-promises
 validateToken();
